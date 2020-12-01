@@ -1,11 +1,18 @@
 # Kaggle tips and tricks
-From diferent sources (Analytics Vidhya, Gilberto Titericz, Kaggle Days, ...)
+From diferent sources (Gilberto Titericz at Kaggle Days, Analytics Vidhya...)
+
+* Exploratory Data Analysis
+* Feature pre-processing
+* Feature engineering
+* Model selection
+* Hyperparameter optimization
+
 
 ## Exploratory Data Analysis
 
 Check if the problem is a hidden time series problem
 
-Check correlation feature and target
+Check correlation between feature and target
 
 
 ## Feature pre-processing
@@ -26,6 +33,7 @@ A good reason to start with decision trees when working on a new dataset is that
 ![Target scaling code](images/Target_scaling_code.png)
 
 ![Allstate competition](images/AllState_competition.png)
+
 In this competition, Gilberto got top 7 rank by creating a different model scaling the target as per the formulas above and ensembling the different models
 
 
@@ -72,8 +80,82 @@ train.group(['class'])['Age'].agg(['count','mean','min','max','skew']).reset_ind
 
 In Time Series, for Kaggle competitions, define lag that fit correctly depending on the test set size.
 
+**Dimension reduction**
+
+Adding the features coming from dimension reduction to the original features.
+* PCA
+* LDA
+* SVD
+* t-SNE
+* Nearest Neightbour
+* Autoencoder
+
+Denoising autoencoder
+
+We can generate from the internal layer to generate extra features. We add some noise to the input.
+But how to add noise to the inputs? Instead of just adding noise to the entire variable, switch for example only 30% of the rows in some specific columns. By using this technique we do not change the variable distribution.
+
+**Clustering**
+
+Using clustering algorithms to generate new features. Try more than one algorithm to create categorical based on the clusters or the cluster distance metrics.
+
+* K-means
+* Affinity propagation
+* Mean shift
+* Spectral clustering
+* DBSCAN
+* Agglomerative clustering
+* Optics
+* Birch
+
+**GDBT tree leaves**
+
+Ask the GDBM to return the leave of the prediction.
+The strategy is to use this leave as a weak feature.
+
+For example, fit a lightgbm for for 100 rounds (trees) using num_leaves=10. Leaf prediction function returns a matrix of shape (nrowsx100), each column have a leave index ranging from 0 to 9.
+
+**Natural Language Processing (NLP)**
+* Bag of Words/NGrams
+* Tf-Idf
+* Transfer Learning using DL (word embeddings)
+* Double translation (remove noise/add). Use the translation services to Spanish, and then translate back to English.
+
 
 ## Feature selection
+
+Classical algorithms: Forward Selection, Backward Elimination, Recursive Feature Elimination (sklearn RFE).
+
+**Use GDBT Feature importance information:**
+1. Build a LightGBM model using only train fold and compute feature importance.
+2. Drop features with importance below certain threshold and train the model again.
+3. Use that model to predict the validation/test set.
+
+**Random Noise Feature importance**
+
+1. Add a feature that is pure noise. 
+2. Train a GDBT or Linear model and compute the feature importance. 
+3. If there is a feature below the random values feature, probably makes sense to drop it.
+
+**Leave One Feature Out(LOFO)**
+
+Remove one feature each time and compute the difference of the new metric and the initial metric using all features.
+How to remove a feature?
+1. Hard write a fixed value
+2. Hard write the mean average
+3. Shuffling
+
+**Adversarial validation**
+
+Try to detect differences in the distributions from train and test set.
+Classify if a row comes from the train set or from test set.
+How:
+Concatenate train+test set.
+Target variable 0 to all train rows, 1 to test rows.
+Build a model.
+If AUC metric >> 0.5 means that is easy for the model to distinguish between train and test rows.
+Compute feature importance and have an idea which feature is responsible for the bias between train and test set.
+
 
 
 
