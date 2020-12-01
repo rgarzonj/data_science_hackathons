@@ -37,7 +37,6 @@ A good reason to start with decision trees when working on a new dataset is that
 In this competition, Gilberto got top 7 rank by creating a different model scaling the target as per the formulas above and ensembling the different models
 
 
-
 ### NaN imputation
 
 Add Extra column to tell the model that the feature and row was imputed
@@ -90,7 +89,7 @@ Adding the features coming from dimension reduction to the original features.
 * Nearest Neightbour
 * Autoencoder
 
-Denoising autoencoder
+**Denoising autoencoder**
 
 We can generate from the internal layer to generate extra features. We add some noise to the input.
 But how to add noise to the inputs? Instead of just adding noise to the entire variable, switch for example only 30% of the rows in some specific columns. By using this technique we do not change the variable distribution.
@@ -147,22 +146,23 @@ How to remove a feature?
 
 **Adversarial validation**
 
-Try to detect differences in the distributions from train and test set.
-Classify if a row comes from the train set or from test set.
+Try to detect differences in the distributions from train and test set. Classify if a row comes from the train set or from test set.
 How:
-Concatenate train+test set.
-Target variable 0 to all train rows, 1 to test rows.
-Build a model.
-If AUC metric >> 0.5 means that is easy for the model to distinguish between train and test rows.
-Compute feature importance and have an idea which feature is responsible for the bias between train and test set.
-
-
-
+1. Concatenate train+test set.
+2. Target variable 0 to all train rows, 1 to test rows.
+3. Build a model.
+4. If AUC metric >> 0.5 means that is easy for the model to distinguish between train and test rows.
+5. Compute feature importance and have an idea which feature is responsible for the bias between train and test set.
 
 ## Model selection
 
 
 ## Hyperparameter optimization
+
+
+## Cross validation for Time series
+
+Walking forward strategy. Ex. Take 1 week (train) + 2 days(validation), then walk forward a few days and again take 1 week (train) + 2 days
 
 
 
